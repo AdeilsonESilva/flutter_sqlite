@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
     resultado.forEach((element) {
       print('item id: ${element['id']}'
           ' nome: ${element['nome']}'
-          ' nomeMauisculo: ${element['nomeMauisculo']}'
+          // ' nomeMauisculo: ${element['nomeMauisculo']}'
           ' idade: ${element['idade']}');
     });
     // print(resultado);
@@ -81,12 +81,25 @@ class _HomeState extends State<Home> {
   void _excluirUsuario(int id) async {
     var bd = await _recuperarBancoDados();
 
-    await bd.delete('usuarios', where: 'id = ?', whereArgs: [id]);
+    int retorno = await bd.delete('usuarios', where: 'id = ?', whereArgs: [id]);
+    print('Removidos: $retorno');
+  }
+
+  void _atualizarUsuario(int id) async {
+    var bd = await _recuperarBancoDados();
+
+    int retorno = await bd.update(
+      'usuarios',
+      {'nome': 'Adeilson E Silva', 'idade': 28},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    print('Atualizados: $retorno');
   }
 
   @override
   Widget build(BuildContext context) {
-    _excluirUsuario(1);
+    _atualizarUsuario(2);
     _listarUsuarios();
 
     return Scaffold(
